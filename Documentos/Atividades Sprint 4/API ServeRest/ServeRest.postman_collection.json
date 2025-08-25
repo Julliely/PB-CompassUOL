@@ -1,0 +1,2089 @@
+{
+	"info": {
+		"_postman_id": "21cb2223-7d5f-4c99-bed0-416ec7cc850d",
+		"name": "ServeRest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47431849",
+		"_collection_link": "https://jullielysousa-7776520.postman.co/workspace/Julliely-Compass~a8537d58-4465-4d8a-9d6e-78415451556b/collection/47431849-21cb2223-7d5f-4c99-bed0-416ec7cc850d?action=share&source=collection_link&creator=47431849"
+	},
+	"item": [
+		{
+			"name": "POST login",
+			"item": [
+				{
+					"name": "POST Login com usuário válido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Token retornado\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"authorization\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Token não está vazio\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.authorization.length).to.be.above(0);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"usuario_teste@serverestdois.dev\",\r\n  \"password\": \"senhaValid\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Login com e-mail inválido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code esperado para login inválido\", function () {\r",
+									"    pm.expect(pm.response.code).to.be.oneOf([400, 401]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Mensagem de erro adequada\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    \r",
+									"    if (pm.response.code === 401) {\r",
+									"        pm.expect(jsonData.message).to.eql(\"Email e/ou senha inválidos\");\r",
+									"    } else if (pm.response.code === 400) {\r",
+									"        // A API retorna os campos como body quando o e-mail não existe\r",
+									"        pm.expect(jsonData.email).to.eql(\"naoexiste@serverest.dev\");\r",
+									"        pm.expect(jsonData.password).to.eql(\"senhaValida123\");\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"naoexiste@serverest.dev\",\r\n  \"password\": \"senhaValida123\"\r\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Login com senha incorreta",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Mensagem de erro de senha\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"Email e/ou senha inválidos\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"usuario_valido@serverest.dev\",\r\n  \"password\": \"senhaIncorreta\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST Login com campos vazios",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Mensagem de erro campos obrigatórios\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.message).to.eql(\"Email e senha são obrigatórios\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"\",\r\n  \"password\": \"\"\r\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Este endpoint é utilizado para autenticar um usuário no sistema. Para ter acesso, o usuário deve ter um cadastro prévio e fornecer um e-mail e uma senha válidos. A autenticação bem-sucedida retorna um token de acesso para ser usado em requisições futuras.\n\n**Parâmetros da Requisição (Body)**\n\n- `email`: (string, obrigatório) - O e-mail cadastrado do usuário. Ex: `usuario@email.com`\n    \n- `password`: (string, obrigatório) - A senha do usuário. Ex: `senhasecreta123`\n    \n\n**Cenários de Teste e Códigos de Resposta Esperados**\n\n- **Login com usuário válido**: O e-mail e a senha fornecidos correspondem a um usuário cadastrado.\n    \n    - **Código de Resposta**: `200 OK`\n        \n    - **Detalhes**: Retorna um token de autenticação (ex: JWT) e informações básicas do usuário.\n        \n- **Login com e-mail inválido**: O e-mail fornecido não está no formato correto ou não existe no sistema.\n    \n    - **Código de Resposta**: `400 Bad Request` ou `401 Unauthorized`\n        \n    - **Detalhes**: Uma mensagem de erro indicando que o e-mail é inválido.\n        \n- **Login com senha incorreta**: O e-mail está correto, mas a senha não corresponde ao usuário.\n    \n    - **Código de Resposta**: `401 Unauthorized`\n        \n    - **Detalhes**: Uma mensagem de erro indicando que a senha está incorreta.\n        \n- **Login com campos vazios**: Um ou ambos os campos (`email`, `password`) estão vazios na requisição.\n    \n    - **Código de Resposta**: `400 Bad Request`\n        \n    - **Detalhes**: Uma mensagem de erro solicitando o preenchimento de todos os campos obrigatórios."
+		},
+		{
+			"name": "usuário",
+			"item": [
+				{
+					"name": "POST Cria usuário",
+					"item": [
+						{
+							"name": "POST Criar usuário válido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Usuário criado com ID\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData).to.have.property(\"_id\");\r",
+											"    pm.environment.set(\"idUsuarioTeste\", jsonData._id);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Mensagem de sucesso presente\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.message).to.eql(\"Cadastro realizado com sucesso\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nome\": \"Usuario Teste Dois\",\n  \"email\": \"usuario_teste@serverestdois.dev\",\n  \"password\": \"senhaValid\",\n  \"administrador\": \"true\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/usuarios",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Campos obrigatórios vazios",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Mensagens de campos obrigatórios\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.nome).to.eql(\"nome não pode ficar em branco\");\r",
+											"    pm.expect(jsonData.email).to.eql(\"email não pode ficar em branco\");\r",
+											"    pm.expect(jsonData.password).to.eql(\"password não pode ficar em branco\");\r",
+											"    pm.expect(jsonData.administrador).to.eql(\"administrador deve ser 'true' ou 'false'\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nome\": \"\",\n  \"email\": \"\",\n  \"password\": \"\",\n  \"administrador\": \"\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/usuarios",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST E-mail já cadastrado",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Mensagem de e-mail duplicado\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.message).to.eql(\"Este email já está sendo usado\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nome\": \"Outro Usuário\",\r\n  \"email\": \"usuario_teste@serverest.dev\",\r\n  \"password\": \"senhaNova123\",\r\n  \"administrador\": \"false\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/usuarios",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Tamanho de senha inválido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Mensagem de senha inválida\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.password).to.eql(\"password deve ter entre 5 e 10 caracteres\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nome\": \"Usuario Teste\",\r\n  \"email\": \"usuario_limite@serverest.dev\",\r\n  \"password\": \"123\",\r\n  \"administrador\": \"true\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/usuarios",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Criar usuário gmail - issue 201",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Mensagem de erro sobre e-mail\", function () {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.email || jsonData.message).to.include(\"não permitido\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\": \"Usuario Gmail\",\r\n    \"email\": \"usuario@gmail.com\",\r\n    \"password\": \"senha123\",\r\n    \"administrador\": \"true\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/usuarios",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST Criar usuário hotmail - issue 201",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Mensagem de erro sobre e-mail\", function () {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.email || jsonData.message).to.include(\"não permitido\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\": \"Usuario hotmail\",\r\n    \"email\": \"usuario@hotmail.com\",\r\n    \"password\": \"senha123\",\r\n    \"administrador\": \"true\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/usuarios",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Cria um novo usuário no sistema. Para que a criação seja bem-sucedida, é necessário fornecer um e-mail e uma senha válidos que ainda não estejam cadastrados.  \n**Cenários de Teste e Respostar Esperadas**\n\n- **Criar usuário válido:** Criação bem-sucedida de um novo usuário.\n    \n    - **Código de Resposta:** `201 Created`\n        \n- **Campos obrigatórios vazios:** A requisição não contém todos os campos obrigatórios.\n    \n    - **Código de Resposta:** `400 Bad Request`\n        \n- **E-mail já cadastrado:** O e-mail fornecido já está em uso por outro usuário.\n    \n    - **Código de Resposta:** `400 Bad Request`\n        \n- **Tamanho de senha inválido:** A senha não atende aos requisitos de tamanho mínimo ou máximo.\n    \n    - **Código de Resposta:** `400 Bad Request`"
+				},
+				{
+					"name": "GET Listar usuários cadastrados",
+					"item": [
+						{
+							"name": "GET Listar todos os usuários",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Resposta contém lista de usuários\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.quantidade).to.be.a(\"number\");\r",
+											"    pm.expect(jsonData.usuarios).to.be.an(\"array\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Cada usuário contém campos obrigatórios\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    jsonData.usuarios.forEach(function(usuario) {\r",
+											"        pm.expect(usuario).to.have.property(\"nome\");\r",
+											"        pm.expect(usuario).to.have.property(\"email\");\r",
+											"        pm.expect(usuario).to.have.property(\"password\");\r",
+											"        pm.expect(usuario).to.have.property(\"administrador\");\r",
+											"        pm.expect(usuario).to.have.property(\"_id\");\r",
+											"    });\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseUrl}}/usuarios",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Listar todos os usuários nome",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code 200 - Filtro por nome\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Usuários retornados correspondem ao filtro\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    jsonData.usuarios.forEach(function(usuario) {\r",
+											"        pm.expect(usuario.nome).to.include(\"Usuario Teste\");\r",
+											"    });\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseUrl}}/usuarios?nome=Usuario Teste",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios"
+									],
+									"query": [
+										{
+											"key": "nome",
+											"value": "Usuario Teste"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Listar todos os usuários nome",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code 200 - Filtro por email\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"E-mails retornados correspondem ao filtro\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    jsonData.usuarios.forEach(function(usuario) {\r",
+											"        pm.expect(usuario.email).to.eql(\"usuario_teste@serverest.dev\");\r",
+											"    });\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseUrl}}/usuarios?email=usuario_teste@serverest.dev",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "usuario_teste@serverest.dev"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Listar todos os usuários inexistente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code 200 - Nenhum usuário encontrado\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Quantidade 0 e array vazio\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.quantidade).to.eql(0);\r",
+											"    pm.expect(jsonData.usuarios).to.be.an(\"array\").that.is.empty;\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{baseUrl}}/usuarios?nome=UsuarioInexistenteXYZ",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios"
+									],
+									"query": [
+										{
+											"key": "nome",
+											"value": "UsuarioInexistenteXYZ"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Lista todos os usuários cadastrados no sistema. Pode ser usado para obter uma visão geral dos usuários existentes.  \n**Cenários de Teste e Respostas Esperadas**\n\n- **Listar todos os usuários:** Retorna a lista completa de usuários cadastrados.\n    \n    - **Código de Resposta:** `200 OK`\n        \n- **Listar todos os usuários (por nome):** Busca usuários com base no nome (possivelmente um filtro de busca).\n    \n    - **Código de Resposta:** `200 OK`\n        \n- **Listar todos os usuários inexistentes:** A busca não retorna nenhum resultado.\n    \n    - **Código de Resposta:** `200 OK` (retorna uma lista vazia `[]`) ou `404 Not Found`."
+				},
+				{
+					"name": "GET Busca por ID",
+					"item": [
+						{
+							"name": "GET Busca ID sucesso",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Resposta em formato JSON\", function () {\r",
+											"    pm.response.to.be.withBody;\r",
+											"    pm.response.to.be.json;\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Campos obrigatórios presentes\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData).to.have.property(\"_id\");\r",
+											"    pm.expect(jsonData).to.have.property(\"nome\");\r",
+											"    pm.expect(jsonData).to.have.property(\"email\");\r",
+											"    pm.expect(jsonData).to.have.property(\"password\");\r",
+											"    pm.expect(jsonData).to.have.property(\"administrador\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/usuarios/07CGwKMllxhtpmMO",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios",
+										"07CGwKMllxhtpmMO"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Busca ID inexistente",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "GET Busca ID tamanho",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Mensagem de erro para ID inválido\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.id).to.eql(\"id deve ter exatamente 16 caracteres alfanuméricos\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/usuarios/123",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios",
+										"123"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Busca um usuário específico pelo seu ID. O ID é um identificador único de cada usuário.  \n**Cenários de Teste e Respostas Esperadas**\n\n- **Busca ID sucesso:** O ID fornecido corresponde a um usuário existente.\n    \n    - **Código de Resposta:** `200 OK`\n        \n- **Busca ID inexistente:** O ID fornecido não corresponde a nenhum usuário cadastrado.\n    \n    - **Código de Resposta:** `404 Not Found`\n        \n- **Busca ID tamanho:** O ID tem um formato ou tamanho inválido.\n    \n    - **Código de Resposta:** `400 Bad Request`"
+				},
+				{
+					"name": "PUT Editar usuário",
+					"item": [
+						{
+							"name": "PUT Atualização completa do usuário",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Mensagem de registro alterado\", function () {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.message).to.eql(\"Registro alterado com sucesso\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\": \"Usuario Teste Atualizado\",\r\n    \"email\": \"usuario_teste_atualizado@serverest.dev\",\r\n    \"password\": \"novaSenha123\",\r\n    \"administrador\": \"true\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/usuarios/4lvzB5nYnJaQeXnd",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios",
+										"4lvzB5nYnJaQeXnd"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT Atualização parcial",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Mensagem de registro alterado\", function () {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.message).to.eql(\"Registro alterado com sucesso\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nome\": \"Usuario Nome Atualizado\",\r\n    \"email\": \"usuario_teste@serverest.dev\",\r\n    \"password\": \"senhaValida123\",\r\n    \"administrador\": \"true\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/usuarios/4lvzB5nYnJaQeXnd",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios",
+										"4lvzB5nYnJaQeXnd"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT Senha mínima (5 caracteres)",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Mensagem de registro alterado\", function () {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.message).to.eql(\"Registro alterado com sucesso\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nome\": \"Usuario Limite\",\n    \"email\": \"usuario_limite@serverest1.dev\",\n    \"password\": \"123\",\n    \"administrador\": \"true\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/usuarios/4lvzB5nYnJaQeXnd",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios",
+										"4lvzB5nYnJaQeXnd"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT Senha ultrapassando o limite de 10 caracteres",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Mensagem de registro alterado\", function () {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.message).to.eql(\"Registro alterado com sucesso\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nome\": \"Usuario Limite\",\n    \"email\": \"usuario_limite_max@serverest.dev\",\n    \"password\": \"senha123456789012345\",\n    \"administrador\": \"true\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/usuarios/4lvzB5nYnJaQeXnd",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios",
+										"4lvzB5nYnJaQeXnd"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT ID inexistente - cadastra novo usuário",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201 ou 400\", function () {\r",
+											"    pm.expect(pm.response.code === 201 || pm.response.code === 400).to.be.true;\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nome\": \"Novo Usuario\",\n    \"email\": \"novo@serverest.dev\",\n    \"password\": \"senha123\",\n    \"administrador\": \"true\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/usuarios/abcd1234abcd1234",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios",
+										"abcd1234abcd1234"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Atualiza as informações de um usuário existente. O ID do usuário deve ser fornecido na URL. É possível fazer atualizações completas ou parciais, dependendo da implementação do endpoint.  \n**Cenários de Teste e Respostas Esperadas**\n\n- **Atualização completa do usuário:** Todos os dados do usuário são atualizados com os novos valores.\n    \n    - **Código de Resposta:** `200 OK`\n        \n- **Atualização parcial:** Apenas alguns campos são atualizados (ex: apenas a senha).\n    \n    - **Código de Resposta:** `200 OK`\n        \n- **Senha mínima (5 caracteres):** A nova senha não atende ao requisito de 5 caracteres.\n    \n    - **Código de Resposta:** `400 Bad Request`\n        \n- **Senha ultrapassando o limite:** A nova senha excede o limite de caracteres permitidos.\n    \n    - **Código de Resposta:** `400 Bad Request`\n        \n- **ID inexistente - cadastra novo:** (Nota: Este é um comportamento de `PUT` que nem sempre é padrão) O endpoint cria um novo recurso se o ID não existir.\n    \n    - **Código de Resposta:** `201 Created`"
+				},
+				{
+					"name": "DELETE usuário",
+					"item": [
+						{
+							"name": "DELETE Deletar usuário existente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"pm.test(\"Mensagem de registro excluído\", function () {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.message).to.eql(\"Registro excluído com sucesso\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/usuarios/4lvzB5nYnJaQeXnd",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios",
+										"4lvzB5nYnJaQeXnd"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE ID inexistente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"pm.test(\"Mensagem de usuário não encontrado\", function () {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.message).to.include(\"não encontrado\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/usuarios/abcd1234abcd1234",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios",
+										"abcd1234abcd1234"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE ID com caracteres inválidos",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"pm.test(\"Mensagem sobre ID inválido\", function () {\r",
+											"    const jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.message || jsonData.id).to.include(\"16 caracteres alfanuméricos\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/usuarios/abc$%123",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios",
+										"abc$%123"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE Deleção repetitiva",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code 200 ou 400\", function () {\r",
+											"    pm.expect(pm.response.code === 200 || pm.response.code === 400).to.be.true;\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/usuarios/4lvzB5nYnJaQeXnd",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios",
+										"4lvzB5nYnJaQeXnd"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Exclui um usuário do sistema com base no seu ID. Esta operação é irreversível.  \n**Cenários de Teste e Respostas Esperadas**\n\n- **Deletar usuário existente:** O usuário correspondente ao ID é excluído com sucesso.\n    \n    - **Código de Resposta:** `204 No Content` ou `200 OK`\n        \n- **ID inexistente:** O ID fornecido não corresponde a nenhum usuário, então nada é excluído.\n    \n    - **Código de Resposta:** `404 Not Found`\n        \n- **ID com caracteres inválidos:** O formato do ID não é válido (ex: contém letras onde deveria ser um número).\n    \n    - **Código de Resposta:** `400 Bad Request`\n        \n- **Deleção repetitiva:** Tentativa de excluir um usuário que já foi removido.\n    \n    - **Código de Resposta:** `404 Not Found`"
+				}
+			],
+			"description": "Este módulo gerencia as operações de **Criação, Leitura, Atualização e Exclusão (CRUD)** de usuários no sistema. Ele permite registrar novos usuários, buscar informações, atualizar dados e, se necessário, remover perfis existentes. Todos os endpoints deste módulo garantem a integridade dos dados e a validação das informações do usuário.\n\n### **Corpo da Requisição (Body) para Usuário**\n\nO corpo da requisição para criar ou atualizar um usuário deve seguir a seguinte estrutura JSON:\n\n{  \n\"nome\": \"Usuario Teste Dois\",  \n\"email\": \"[usuario_teste@serverestdois.dev](https://mailto:usuario_teste@serverestdois.dev)\",  \n\"password\": \"senhaValid\",  \n\"administrador\": \"true\"  \n}"
+		},
+		{
+			"name": "produtos",
+			"item": [
+				{
+					"name": "GET Produtos",
+					"item": [
+						{
+							"name": "GET Listar produtos cadastrados",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Resposta contém array de usuários\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData).to.be.an('array');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Cada usuário possui campos obrigatórios\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    jsonData.forEach(function(user) {\r",
+											"        pm.expect(user).to.have.property('id');\r",
+											"        pm.expect(user).to.have.property('nome');\r",
+											"        pm.expect(user).to.have.property('email');\r",
+											"        pm.expect(user).to.have.property('password');\r",
+											"        pm.expect(user).to.have.property('administrador');\r",
+											"    });\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzdWFyaW9fdGVzdGVAc2VydmVyZXN0LmRldiIsInBhc3N3b3JkIjoic2VuaGFWYWxpZCIsImlhdCI6MTc1NTI3OTQ4NSwiZXhwIjoxNzU1MjgwMDg1fQ.gIp7trArgmmfefOHezBeDfj704pPOSpVLd4wUCTdnmM",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/produtos",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"produtos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Usuário não autenticado - issue",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code 401 ou 403\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([401, 403]);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Mensagem de erro presente\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData).to.have.property('message');\r",
+											"    pm.expect(jsonData.message).to.include(\"não autenticado\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/produtos",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"produtos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET usuários com filtros válidos",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Todos os produtos retornados contêm o nome filtrado\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    var produtos = jsonData.produtos;\r",
+											"    var filtroNome = \"teste\";\r",
+											"    produtos.forEach(function(produto) {\r",
+											"        pm.expect(produto.nome).to.include(filtroNome);\r",
+											"    });\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/produtos?nome=teste",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"produtos"
+									],
+									"query": [
+										{
+											"key": "nome",
+											"value": "teste"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Filtros inválidos",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code 400 ou array vazio\", function () {\r",
+											"    pm.expect(pm.response.code).to.be.oneOf([400, 200]);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Mensagem de erro ou array vazio\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    if(pm.response.code === 400){\r",
+											"        pm.expect(jsonData).to.have.property('message');\r",
+											"        pm.expect(jsonData.message).to.include(\"inválido\");\r",
+											"    } else {\r",
+											"        pm.expect(jsonData).to.be.an('array');\r",
+											"        pm.expect(jsonData.length).to.eql(0);\r",
+											"    }\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/usuarios?idade=abc",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios"
+									],
+									"query": [
+										{
+											"key": "idade",
+											"value": "abc"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Lista todos os produtos disponíveis no sistema. Pode ser usado para obter a lista completa de produtos ou aplicar filtros para buscas específicas.  \n\n**Cenários de Teste e Resposta Esperada**\n\n- **GET Listar produtos cadastrados:** Retorna a lista completa de produtos.\n    \n    - **Código de Resposta:** `200 OK`\n        \n- **GET Usuário não autenticado:** Tenta acessar a lista sem estar logado.\n    \n    - **Código de Resposta:** `401 Unauthorized`\n        \n- **GET Filtragem de produtos por nome:** Realiza a busca de produtos com base em um filtro de nome.\n    \n    - **Código de Resposta:** `200 OK`\n        \n- **GET Filtros inválidos:** A requisição contém um ou mais filtros com valores inválidos.\n    \n    - **Código de Resposta:** `400 Bad Request`"
+				},
+				{
+					"name": "GET Produtos Busca por ID",
+					"item": [
+						{
+							"name": "GET Busca por ID sucesso",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Produto retornado possui campos obrigatórios\", function () {\r",
+											"    var produto = pm.response.json();\r",
+											"    pm.expect(produto).to.have.property('nome');\r",
+											"    pm.expect(produto).to.have.property('preco');\r",
+											"    pm.expect(produto).to.have.property('descricao');\r",
+											"    pm.expect(produto).to.have.property('quantidade');\r",
+											"    pm.expect(produto).to.have.property('_id');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Produto retornado tem o ID solicitado\", function () {\r",
+											"    var produto = pm.response.json();\r",
+											"    pm.expect(produto._id).to.eql(pm.environment.get(\"idProduto\"));\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/produtos/BeeJh5lz3k6kSIzA",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"produtos",
+										"BeeJh5lz3k6kSIzA"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Busca por ID inválido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code 400 para ID inválido\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Mensagem de produto não encontrado\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData).to.have.property('message');\r",
+											"    pm.expect(jsonData.message).to.include(\"não encontrado\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/produtos/IDINEXISTENTEldn",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"produtos",
+										"IDINEXISTENTEldn"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Busca um produto específico pelo seu ID. O ID do produto deve ser fornecido na URL.  \n\n**Cenários de Teste e Resposta Esperada**\n\n- **GET Busca por ID sucesso:** O ID fornecido corresponde a um produto existente.\n    \n    - **Código de Resposta:** `200 OK`\n        \n- **GET Busca por ID inválido:** O ID fornecido não corresponde a um produto cadastrado ou tem um formato inválido.\n    \n    - **Código de Resposta:** `404 Not Found` ou `400 Bad Request`"
+				},
+				{
+					"name": "POST Produtos",
+					"item": [
+						{
+							"name": "POST - Produto Válido",
+							"event": [
+								{
+									"listen": "test",
+									"script": [
+										"pm.test('Status 201', function() { pm.response.to.have.status(201); });",
+										"pm.test('Produto criado corretamente', function() {",
+										"  const jsonData = pm.response.json();",
+										"  pm.expect(jsonData.nome).to.eql('Produto Teste');",
+										"});"
+									]
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nome\": \"Produto Teste\",\n  \"preco\": 100,\n  \"descricao\": \"Produto normal\",\n  \"quantidade\": 10\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/produtos",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"produtos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST - Nome muito longo",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nome\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\n  \"preco\": 470,\n  \"descricao\": \"Mouse\",\n  \"quantidade\": 381\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/produtos",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"produtos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST - Preço mínimo inválido",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nome\": \"Produto Qtd Negativa\",\n  \"descricao\": \"caneta\",\n  \"preco\": -1,\n  \"quantidade\": 10\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/produtos",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"produtos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "POST - Quantidade negativa",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"nome\": \"Produto Qtd Negativa\",\n  \"descricao\": \"caneta\",\n  \"preco\": 50,\n  \"quantidade\": -10\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/produtos",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"produtos"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Cria um novo produto no sistema. Esta ação requer que o usuário esteja autenticado.  \n\n**Cenários de Teste e Resposta Esperada**\n\n- **POST Produto Válido:** A requisição contém todos os dados necessários e válidos para a criação do produto.\n    \n    - **Código de Resposta:** `201 Created`\n        \n- **POST Nome muito longo:** O nome do produto excede o limite de caracteres permitidos.\n    \n    - **Código de Resposta:** `400 Bad Request`\n        \n- **POST Preço mínimo inválido:** O preço fornecido é menor do que o valor mínimo permitido.\n    \n    - **Código de Resposta:** `400 Bad Request`\n        \n- **POST Quantidade negativa:** A quantidade inicial do produto é um valor negativo.\n    \n    - **Código de Resposta:** `400 Bad Request`"
+				},
+				{
+					"name": "DELETE Produtos por ID",
+					"item": [
+						{
+							"name": "DELETE produto por ID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Mensagem de produto deletado com sucesso\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData).to.have.property('message');\r",
+											"    pm.expect(jsonData.message).to.include(\"Registro excluído com sucesso\");\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/produtos/5hMIVSvSHSYbqjzd",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"produtos",
+										"5hMIVSvSHSYbqjzd"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE Usuário não autenticado",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code 401\", function () {\r",
+											"    pm.response.to.have.status(401);\r",
+											"});\r",
+											"pm.test(\"Mensagem de token inválido\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.message).to.include(\"Token de acesso ausente\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/produtos/5hMIVSvSHSYbqjzd",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"produtos",
+										"5hMIVSvSHSYbqjzd"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE Usuário autenticado mas não administrador",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.environment.set(\"authToken\", \"token_usuario_comum\");"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code 403\", function () {\r",
+											"    pm.response.to.have.status(403);\r",
+											"});\r",
+											"pm.test(\"Mensagem de rota restrita\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.message).to.eql(\"Rota exclusiva para administradores\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Baerer {{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/produtos/BeeJh5lz3k6kSIzA",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"produtos",
+										"BeeJh5lz3k6kSIzA"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Exclui um produto do sistema com base no seu ID. Esta operação só pode ser realizada por usuários autenticados e com permissão adequada.  \n  \n**Cenários de Teste e Resposta Esperada**\n\n- **DELETE produto por ID:** O produto é excluído com sucesso.\n    \n    - **Código de Resposta:** `204 No Content` ou `200 OK`\n        \n- **DELETE Usuário não autenticado:** A requisição é feita sem um token de autenticação válido.\n    \n    - **Código de Resposta:** `401 Unauthorized`\n        \n- **DELETE Usuário autenticado mas não autorizado:** O usuário está autenticado, mas não tem permissão para realizar a exclusão.\n    \n    - **Código de Resposta:** `403 Forbidden`"
+				},
+				{
+					"name": "PUT Produtos por ID",
+					"item": [
+						{
+							"name": "PUT Produto existente com dados válidos",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Mensagem de sucesso\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.message).to.eql(\"Registro alterado com sucesso\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nome\": \"Produto Atualizado\",\r\n  \"preco\": 150,\r\n  \"descricao\": \"Descrição atualizada\",\r\n  \"quantidade\": 20\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/produtos/5hMIVSvSHSYbqjzd",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"produtos",
+										"5hMIVSvSHSYbqjzd"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT Atualizar produto inexistente",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Mensagem de cadastro\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.message).to.eql(\"Cadastro realizado com sucesso\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Novo produto contém ID\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData).to.have.property(\"_id\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nome\": \"Produto inexistente teste\",\r\n  \"preco\": 150,\r\n  \"descricao\": \"Descrição atualizada\",\r\n  \"quantidade\": 20\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/produtos/IDINEXISTENTE124",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"produtos",
+										"IDINEXISTENTE124"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT Atualizar sem autenticação",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code 401 ou 403\", function () {\r",
+											"    pm.expect([401,403]).to.include(pm.response.code);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Mensagem de acesso negado\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.message).to.include(\"Token de acesso ausente, inválido, expirado ou usuário do token não existe mais\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nome\": \"Produto Atualizado teste\",\r\n  \"preco\": 150,\r\n  \"descricao\": \"Descrição atualizada\",\r\n  \"quantidade\": 20\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/produtos/5hMIVSvSHSYbqjzd",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"produtos",
+										"5hMIVSvSHSYbqjzd"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PUT Atualizar com dados inválidos",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Validação do campo nome\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.nome).to.eql(\"nome não pode ficar em branco\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Validação do campo preco\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.preco).to.eql(\"preco deve ser um número positivo\");\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Validação do campo quantidade\", function () {\r",
+											"    var jsonData = pm.response.json();\r",
+											"    pm.expect(jsonData.quantidade).to.eql(\"quantidade deve ser maior ou igual a 0\");\r",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nome\": \"\",\r\n  \"preco\": -10,\r\n  \"descricao\": \"Teste inválido\",\r\n  \"quantidade\": -5\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/produtos/5hMIVSvSHSYbqjzd",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"produtos",
+										"5hMIVSvSHSYbqjzd"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "Atualiza as informações de um produto existente. O ID do produto deve ser fornecido na URL.  \n**Cenários de Teste e Resposta Esperada**\n\n- **PUT Produto existente com dados válidos:** O produto é atualizado com sucesso.\n    \n    - **Código de Resposta:** `200 OK`\n        \n- **PUT Atualizar produto inexistente:** Tenta atualizar um produto que não existe no banco de dados.\n    \n    - **Código de Resposta:** `404 Not Found`\n        \n- **PUT Atualizar sem autenticação:** A requisição é feita sem um token de autenticação válido.\n    \n    - **Código de Resposta:** `401 Unauthorized`\n        \n- **PUT Atualizar com dados inválidos:** A requisição contém dados que não atendem aos critérios de validação (ex: nome muito longo, preço inválido).\n    \n    - **Código de Resposta:** `400 Bad Request`"
+				}
+			],
+			"description": "Este módulo gerencia as operações de **Criação, Leitura, Atualização e Exclusão (CRUD)** de produtos no sistema. Ele permite adicionar novos itens ao catálogo, consultar a lista de produtos, atualizar suas informações e remover produtos existentes. Para algumas operações, é exigida autenticação para garantir que apenas usuários autorizados possam realizar modificações.\n\n### **Corpo da Requisição (Body) para Produtos**\n\nO corpo da requisição para criar ou atualizar um produto deve seguir a seguinte estrutura JSON:  \n  \n{  \n\"nome\": \"Notebook Acer\",  \n\"preco\": 3200,  \n\"descricao\": \"Notebook com 8GB de RAM e 500GB de SSD\",  \n\"quantidade\": 150  \n}"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://compassuol.serverest.dev",
+			"type": "string"
+		}
+	]
+}
