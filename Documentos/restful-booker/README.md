@@ -4,7 +4,7 @@ Automação de testes para a API [Restful Booker](https://restful-booker.herokua
 
 ## Estrutura do projeto
 
-´´´
+```
 restful-booker-robot-tests/
 │
 ├── resources/
@@ -19,8 +19,8 @@ restful-booker-robot-tests/
 ├── log.html
 ├── report.html
 └── README.md
+```
 
-´´´
 ## Requisitos
 
 - Python 3.x
@@ -32,3 +32,38 @@ Instalação:
 ```bash
 pip install robotframework
 pip install robotframework-requests
+```
+## Executando os testes
+Rode todos os testes:
+
+```bash
+robot ./tests/
+```
+
+Os resultados ficarão disponíveis em:
+
+output.xml
+
+log.html
+
+report.html
+
+Funcionalidades testadas
+
+Autenticação (/auth)
+
+Listar reservas (GET /booking)
+
+Criar reservas (POST /booking)
+
+Atualizar reservas (PUT /booking/{id})
+
+Deletar reservas (DELETE /booking/{id})
+
+## Referências
+
+Documentação API Restful Booker
+
+Robot Framework
+
+RequestsLibrary
