@@ -40,30 +40,22 @@ Rode todos os testes:
 robot ./tests/
 ```
 
-Os resultados ficarão disponíveis em:
+## Os resultados ficarão disponíveis em:
 
-output.xml
+- output.xml
+- log.html
+- report.html
 
-log.html
+## Funcionalidades testadas
 
-report.html
-
-Funcionalidades testadas
-
-Autenticação (/auth)
-
-Listar reservas (GET /booking)
-
-Criar reservas (POST /booking)
-
-Atualizar reservas (PUT /booking/{id})
-
-Deletar reservas (DELETE /booking/{id})
+- Autenticação (/auth)
+- Listar reservas (GET /booking)
+- Criar reservas (POST /booking)
+- Atualizar reservas (PUT /booking/{id})
+- Deletar reservas (DELETE /booking/{id})
 
 ## Referências
 
-Documentação API Restful Booker
-
-Robot Framework
-
-RequestsLibrary
+- [Documentação API Restful Booker](https://restful-booker.herokuapp.com/apidoc/index.html)
+- [Robot Framework](https://robotframework.org/)
+- [RequestsLibrary](https://marketsquare.github.io/robotframework-requests/)
