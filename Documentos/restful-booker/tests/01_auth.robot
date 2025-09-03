@@ -1,6 +1,6 @@
 *** Settings ***
-Library    RequestsLibrary
-Resource   ../resources/keywords.resource
+Resource    ../resources/config.resource
+Resource    ../resources/auth.resource
 Suite Setup    Iniciar Sessao
 
 *** Test Cases ***
