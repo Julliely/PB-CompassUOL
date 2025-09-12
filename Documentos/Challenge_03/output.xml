@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.3.2 (Python 3.12.10 on win32)" generated="2025-09-12T10:11:12.343166" rpa="false" schemaversion="5">
+<suite id="s1" name="Products Test" source="c:\Users\Julliely\Desktop\Challenge_03\Challenge_03_tests\tests\products_test.robot">
+<test id="s1-t1" name="DELETE Produto Em Carrinho Deve Retornar 400" line="196">
+<kw name="Criar Sessao" owner="config">
+<kw name="Create Session" owner="RequestsLibrary">
+<msg time="2025-09-12T10:11:12.853616" level="INFO">Creating Session using : alias=api, url=https://compassuol.serverest.dev, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<arg>api</arg>
+<arg>${BASE_URL}</arg>
+<arg>verify=False</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<status status="PASS" start="2025-09-12T10:11:12.853616" elapsed="0.001974"/>
+</kw>
+<status status="PASS" start="2025-09-12T10:11:12.853616" elapsed="0.001974"/>
+</kw>
+<kw name="Email" owner="FakerLibrary">
+<msg time="2025-09-12T10:11:12.856552" level="INFO">${email_admin} = iryan@example.com</msg>
+<var>${email_admin}</var>
+<status status="PASS" start="2025-09-12T10:11:12.855590" elapsed="0.000962"/>
+</kw>
+<kw name="POST Usuario" owner="users">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2025-09-12T10:11:12.857553" level="INFO">${body} = {'nome': 'Admin Produtos', 'email': 'iryan@example.com', 'password': 'senha123', 'administrador': 'true'}</msg>
+<var>${body}</var>
+<arg>nome=${nome}</arg>
+<arg>email=${email}</arg>
+<arg>password=${senha}</arg>
+<arg>administrador=${admin}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2025-09-12T10:11:12.857553" elapsed="0.001001"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2025-09-12T10:11:13.267773" level="INFO">POST Request : url=https://compassuol.serverest.dev/usuarios 
+ path_url=/usuarios 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '105', 'Content-Type': 'application/json'} 
+ body=b'{"nome": "Admin Produtos", "email": "iryan@example.com", "password": "senha123", "administrador": "true"}' 
+ </msg>
+<msg time="2025-09-12T10:11:13.267773" level="INFO">POST Response : url=https://compassuol.serverest.dev/usuarios 
+ status=201, reason=Created 
+ headers={'access-control-allow-origin': '*', 'x-dns-prefetch-control': 'off', 'x-frame-options': 'SAMEORIGIN', 'strict-transport-security': 'max-age=15552000; includeSubDomains', 'x-download-options': 'noopen', 'x-content-type-options': 'nosniff', 'x-xss-protection': '1; mode=block', 'content-type': 'application/json; charset=utf-8', 'x-cloud-trace-context': '720f6ecac127a934962a052e25ac5d36;o=1', 'date': 'Fri, 12 Sep 2025 13:11:14 GMT', 'server': 'Google Frontend', 'Content-Length': '82'} 
+ body={
+    "message": "Cadastro realizado com sucesso",
+    "_id": "MXcUFZiv1UQG2gNi"
+} 
+ </msg>
+<msg time="2025-09-12T10:11:13.267773" level="INFO">C:\Users\Julliely\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'compassuol.serverest.dev'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2025-09-12T10:11:13.269730" level="INFO">${response} = &lt;Response [201]&gt;</msg>
+<var>${response}</var>
+<arg>api</arg>
+<arg>${USERS_ENDPOINT}</arg>
+<arg>json=${body}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2025-09-12T10:11:12.858554" elapsed="0.411176"/>
+</kw>
+<return>
+<value>${response}</value>
+<status status="PASS" start="2025-09-12T10:11:13.269730" elapsed="0.000000"/>
+</return>
+<msg time="2025-09-12T10:11:13.269730" level="INFO">${response_user} = &lt;Response [201]&gt;</msg>
+<var>${response_user}</var>
+<arg>Admin Produtos</arg>
+<arg>${email_admin}</arg>
+<arg>senha123</arg>
+<arg>true</arg>
+<status status="PASS" start="2025-09-12T10:11:12.857553" elapsed="0.412177"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2025-09-12T10:11:13.271791" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${response_user.status_code}</arg>
+<arg>201</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2025-09-12T10:11:13.270730" elapsed="0.001061"/>
+</kw>
+<kw name="POST Login" owner="login">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2025-09-12T10:11:13.275281" level="INFO">${body} = {'email': 'iryan@example.com', 'password': 'senha123'}</msg>
+<var>${body}</var>
+<arg>email=${email}</arg>
+<arg>password=${password}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2025-09-12T10:11:13.274256" elapsed="0.001025"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2025-09-12T10:11:13.455354" level="INFO">POST Request : url=https://compassuol.serverest.dev/login 
+ path_url=/login 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '54', 'Content-Type': 'application/json'} 
+ body=b'{"email": "iryan@example.com", "password": "senha123"}' 
+ </msg>
+<msg time="2025-09-12T10:11:13.455354" level="INFO">POST Response : url=https://compassuol.serverest.dev/login 
+ status=200, reason=OK 
+ headers={'access-control-allow-origin': '*', 'x-dns-prefetch-control': 'off', 'x-frame-options': 'SAMEORIGIN', 'strict-transport-security': 'max-age=15552000; includeSubDomains', 'x-download-options': 'noopen', 'x-content-type-options': 'nosniff', 'x-xss-protection': '1; mode=block', 'content-type': 'application/json; charset=utf-8', 'x-cloud-trace-context': '3e5c103a5ad0597e962a052e25ac589f', 'date': 'Fri, 12 Sep 2025 13:11:14 GMT', 'server': 'Google Frontend', 'Content-Length': '275'} 
+ body={
+    "message": "Login realizado com sucesso",
+    "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImlyeWFuQGV4YW1wbGUuY29tIiwicGFzc3dvcmQiOiJzZW5oYTEyMyIsImlhdCI6MTc1NzY4MjY3NCwiZXhwIjoxNzU3NjgzMjc0fQ.fLpAzTV7GXmCRUBRkDB8uSLyZpMbrtQci5o8lNWAF8M"
+} 
+ </msg>
+<msg time="2025-09-12T10:11:13.456352" level="INFO">C:\Users\Julliely\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'compassuol.serverest.dev'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2025-09-12T10:11:13.457351" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<var>${response}</var>
+<arg>api</arg>
+<arg>${LOGIN_ENDPOINT}</arg>
+<arg>json=${body}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2025-09-12T10:11:13.275281" elapsed="0.182070"/>
+</kw>
+<return>
+<value>${response}</value>
+<status status="PASS" start="2025-09-12T10:11:13.457351" elapsed="0.000998"/>
+</return>
+<msg time="2025-09-12T10:11:13.458349" level="INFO">${login_admin} = &lt;Response [200]&gt;</msg>
+<var>${login_admin}</var>
+<arg>${email_admin}</arg>
+<arg>senha123</arg>
+<status status="PASS" start="2025-09-12T10:11:13.274256" elapsed="0.184093"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2025-09-12T10:11:13.460348" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<arg>${login_admin.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="PASS" start="2025-09-12T10:11:13.459349" elapsed="0.000999"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<msg time="2025-09-12T10:11:13.461349" level="INFO">${token_admin} = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImlyeWFuQGV4YW1wbGUuY29tIiwicGFzc3dvcmQiOiJzZW5oYTEyMyIsImlhdCI6MTc1NzY4MjY3NCwiZXhwIjoxNzU3NjgzMjc0fQ.fLpAzTV7GXmCRUBRkDB8uSLyZpMbrtQci5o8lNWAF...</msg>
+<var>${token_admin}</var>
+<arg>${login_admin.json()["authorization"]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="PASS" start="2025-09-12T10:11:13.461349" elapsed="0.001001"/>
+</kw>
+<kw name="POST Produto" owner="products">
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2025-09-12T10:11:13.464350" level="INFO">${body} = {'nome': 'Produto Delete', 'preco': '99', 'descricao': 'Produto para excluir', 'quantidade': '2'}</msg>
+<var>${body}</var>
+<arg>nome=${nome}</arg>
+<arg>preco=${preco}</arg>
+<arg>descricao=${descricao}</arg>
+<arg>quantidade=${quantidade}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2025-09-12T10:11:13.464350" elapsed="0.001000"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<msg time="2025-09-12T10:11:13.466349" level="INFO">${headers} = {'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImlyeWFuQGV4YW1wbGUuY29tIiwicGFzc3dvcmQiOiJzZW5oYTEyMyIsImlhdCI6MTc1NzY4MjY3NCwiZXhwIjoxNzU3NjgzMjc0fQ.fLpAzTV7GXmCRUBRkDB8uS...</msg>
+<var>${headers}</var>
+<arg>Authorization=${token}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="PASS" start="2025-09-12T10:11:13.466349" elapsed="0.000000"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2025-09-12T10:11:13.645059" level="INFO">POST Request : url=https://compassuol.serverest.dev/produtos 
+ path_url=/produtos 
+ headers={'User-Agent': 'python-requests/2.32.3', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImlyeWFuQGV4YW1wbGUuY29tIiwicGFzc3dvcmQiOiJzZW5oYTEyMyIsImlhdCI6MTc1NzY4MjY3NCwiZXhwIjoxNzU3NjgzMjc0fQ.fLpAzTV7GXmCRUBRkDB8uSLyZpMbrtQci5o8lNWAF8M', 'Content-Length': '97', 'Content-Type': 'application/json'} 
+ body=b'{"nome": "Produto Delete", "preco": "99", "descricao": "Produto para excluir", "quantidade": "2"}' 
+ </msg>
+<msg time="2025-09-12T10:11:13.645059" level="INFO">POST Response : url=https://compassuol.serverest.dev/produtos 
+ status=400, reason=Bad Request 
+ headers={'access-control-allow-origin': '*', 'x-dns-prefetch-control': 'off', 'x-frame-options': 'SAMEORIGIN', 'strict-transport-security': 'max-age=15552000; includeSubDomains', 'x-download-options': 'noopen', 'x-content-type-options': 'nosniff', 'x-xss-protection': '1; mode=block', 'content-type': 'application/json; charset=utf-8', 'x-cloud-trace-context': 'daae4e9bd7b3f6b4962a052e25ac529a', 'date': 'Fri, 12 Sep 2025 13:11:14 GMT', 'server': 'Google Frontend', 'Content-Length': '53'} 
+ body={
+    "message": "Já existe produto com esse nome"
+} 
+ </msg>
+<msg time="2025-09-12T10:11:13.645059" level="INFO">C:\Users\Julliely\AppData\Local\Programs\Python\Python312\Lib\site-packages\urllib3\connectionpool.py:1097: InsecureRequestWarning: Unverified HTTPS request is being made to host 'compassuol.serverest.dev'. Adding certificate verification is strongly advised. See: https://urllib3.readthedocs.io/en/latest/advanced-usage.html#tls-warnings
+  warnings.warn(</msg>
+<msg time="2025-09-12T10:11:13.646800" level="INFO">${response} = &lt;Response [400]&gt;</msg>
+<var>${response}</var>
+<arg>api</arg>
+<arg>${PRODUCTS_ENDPOINT}</arg>
+<arg>json=${body}</arg>
+<arg>headers=${headers}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="PASS" start="2025-09-12T10:11:13.466349" elapsed="0.180451"/>
+</kw>
+<return>
+<value>${response}</value>
+<status status="PASS" start="2025-09-12T10:11:13.646800" elapsed="0.000000"/>
+</return>
+<msg time="2025-09-12T10:11:13.646800" level="INFO">${response} = &lt;Response [400]&gt;</msg>
+<var>${response}</var>
+<arg>Produto Delete</arg>
+<arg>99</arg>
+<arg>Produto para excluir</arg>
+<arg>2</arg>
+<arg>${token_admin}</arg>
+<status status="PASS" start="2025-09-12T10:11:13.463351" elapsed="0.184447"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<msg time="2025-09-12T10:11:13.649798" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<msg time="2025-09-12T10:11:13.649798" level="FAIL">400 != 201</msg>
+<arg>${response.status_code}</arg>
+<arg>201</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="FAIL" start="2025-09-12T10:11:13.648799" elapsed="0.001998">400 != 201</status>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<var>${produto_id}</var>
+<arg>${response.json()["_id"]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2025-09-12T10:11:13.652798" elapsed="0.000000"/>
+</kw>
+<kw name="Email" owner="FakerLibrary">
+<var>${email_user}</var>
+<status status="NOT RUN" start="2025-09-12T10:11:13.655040" elapsed="0.000000"/>
+</kw>
+<kw name="POST Usuario" owner="users">
+<var>${response_user}</var>
+<arg>User Delete</arg>
+<arg>${email_user}</arg>
+<arg>senha123</arg>
+<arg>false</arg>
+<status status="NOT RUN" start="2025-09-12T10:11:13.656040" elapsed="0.001000"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<arg>${response_user.status_code}</arg>
+<arg>201</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="NOT RUN" start="2025-09-12T10:11:13.657040" elapsed="0.000999"/>
+</kw>
+<kw name="POST Login" owner="login">
+<var>${login_user}</var>
+<arg>${email_user}</arg>
+<arg>senha123</arg>
+<status status="NOT RUN" start="2025-09-12T10:11:13.658039" elapsed="0.000000"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<arg>${login_user.status_code}</arg>
+<arg>200</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="NOT RUN" start="2025-09-12T10:11:13.659039" elapsed="0.000000"/>
+</kw>
+<kw name="Set Variable" owner="BuiltIn">
+<var>${token_user}</var>
+<arg>${login_user.json()["authorization"]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<status status="NOT RUN" start="2025-09-12T10:11:13.660039" elapsed="0.000000"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<var>&amp;{headers}</var>
+<arg>Authorization=Bearer ${token_user}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="NOT RUN" start="2025-09-12T10:11:13.661038" elapsed="0.000000"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<var>&amp;{produto}</var>
+<arg>idProduto=${produto_id}</arg>
+<arg>quantidade=1</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="NOT RUN" start="2025-09-12T10:11:13.662070" elapsed="0.000000"/>
+</kw>
+<kw name="Create List" owner="BuiltIn">
+<var>@{produtos}</var>
+<arg>${produto}</arg>
+<doc>Returns a list containing given items.</doc>
+<status status="NOT RUN" start="2025-09-12T10:11:13.663039" elapsed="0.000000"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<var>&amp;{body}</var>
+<arg>produtos=${produtos}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="NOT RUN" start="2025-09-12T10:11:13.665041" elapsed="0.000000"/>
+</kw>
+<kw name="POST Carrinho" owner="carrinho">
+<var>${response}</var>
+<arg>${body}</arg>
+<arg>${token_user}</arg>
+<status status="NOT RUN" start="2025-09-12T10:11:13.666038" elapsed="0.000000"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>201</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="NOT RUN" start="2025-09-12T10:11:13.666038" elapsed="0.000000"/>
+</kw>
+<kw name="Create Dictionary" owner="BuiltIn">
+<var>&amp;{headers_admin}</var>
+<arg>Authorization=Bearer ${token_admin}</arg>
+<doc>Creates and returns a dictionary based on the given ``items``.</doc>
+<status status="NOT RUN" start="2025-09-12T10:11:13.667039" elapsed="0.000000"/>
+</kw>
+<kw name="DELETE On Session" owner="RequestsLibrary">
+<var>${response}</var>
+<arg>api</arg>
+<arg>${PRODUCTS_ENDPOINT}/${produto_id}</arg>
+<arg>headers=${headers_admin}</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a DELETE request on a previously created HTTP Session.</doc>
+<status status="NOT RUN" start="2025-09-12T10:11:13.667039" elapsed="0.000000"/>
+</kw>
+<kw name="Should Be Equal As Integers" owner="BuiltIn">
+<arg>${response.status_code}</arg>
+<arg>400</arg>
+<doc>Fails if objects are unequal after converting them to integers.</doc>
+<status status="NOT RUN" start="2025-09-12T10:11:13.668041" elapsed="0.000000"/>
+</kw>
+<kw name="Dictionary Should Contain Value" owner="Collections">
+<arg>${response.json()}</arg>
+<arg>Não é permitido excluir produto que faz parte de carrinho</arg>
+<doc>Fails if ``value`` is not found from ``dictionary``.</doc>
+<status status="NOT RUN" start="2025-09-12T10:11:13.668041" elapsed="0.000000"/>
+</kw>
+<status status="FAIL" start="2025-09-12T10:11:12.852616" elapsed="0.816422">400 != 201</status>
+</test>
+<status status="FAIL" start="2025-09-12T10:11:12.347098" elapsed="1.322941"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat name="Products Test" id="s1" pass="0" fail="1" skip="0">Products Test</stat>
+</suite>
+</statistics>
+<errors>
+<msg time="2025-09-12T10:11:12.363100" level="WARN">Error in file 'c:\Users\Julliely\Desktop\Challenge_03\Challenge_03_tests\resources\products.resource' on line 7: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-09-12T10:11:12.364098" level="WARN">Error in file 'c:\Users\Julliely\Desktop\Challenge_03\Challenge_03_tests\resources\products.resource' on line 12: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-09-12T10:11:12.365099" level="WARN">Error in file 'c:\Users\Julliely\Desktop\Challenge_03\Challenge_03_tests\resources\products.resource' on line 23: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-09-12T10:11:12.366096" level="WARN">Error in file 'c:\Users\Julliely\Desktop\Challenge_03\Challenge_03_tests\resources\products.resource' on line 34: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-09-12T10:11:12.366096" level="WARN">Error in file 'c:\Users\Julliely\Desktop\Challenge_03\Challenge_03_tests\resources\products.resource' on line 40: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-09-12T10:11:12.650000" level="WARN">Error in file 'c:\Users\Julliely\Desktop\Challenge_03\Challenge_03_tests\resources\users.resource' on line 13: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-09-12T10:11:12.650961" level="WARN">Error in file 'c:\Users\Julliely\Desktop\Challenge_03\Challenge_03_tests\resources\users.resource' on line 17: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-09-12T10:11:12.651973" level="WARN">Error in file 'c:\Users\Julliely\Desktop\Challenge_03\Challenge_03_tests\resources\users.resource' on line 22: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-09-12T10:11:12.651973" level="WARN">Error in file 'c:\Users\Julliely\Desktop\Challenge_03\Challenge_03_tests\resources\users.resource' on line 32: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-09-12T10:11:12.651973" level="WARN">Error in file 'c:\Users\Julliely\Desktop\Challenge_03\Challenge_03_tests\resources\users.resource' on line 37: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-09-12T10:11:12.651973" level="WARN">Error in file 'c:\Users\Julliely\Desktop\Challenge_03\Challenge_03_tests\resources\users.resource' on line 45: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-09-12T10:11:12.652961" level="WARN">Error in file 'c:\Users\Julliely\Desktop\Challenge_03\Challenge_03_tests\resources\login.resource' on line 15: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-09-12T10:11:12.663124" level="WARN">Error in file 'c:\Users\Julliely\Desktop\Challenge_03\Challenge_03_tests\resources\carrinho.resource' on line 13: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-09-12T10:11:12.664104" level="WARN">Error in file 'c:\Users\Julliely\Desktop\Challenge_03\Challenge_03_tests\resources\carrinho.resource' on line 19: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-09-12T10:11:12.665130" level="WARN">Error in file 'c:\Users\Julliely\Desktop\Challenge_03\Challenge_03_tests\resources\carrinho.resource' on line 25: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+</errors>
+</robot>
