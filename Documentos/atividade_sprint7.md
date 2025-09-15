@@ -52,10 +52,10 @@
 **Exemplo: Primeiro produto da lista de resultados**
 
 div#search
-└─ div.s-main-slot
-└─ div.s-result-item[data-component-type="s-search-result"]
-├─ div > div > h2 > a > span → título do produto
-└─ div > div > div > span > span > input[title="Adicionar ao carrinho"] → botão adicionar
+  div.s-main-slot
+    div.s-result-item[data-component-type="s-search-result"]
+      div > div > h2 > a > span       → título do produto
+      div > div > div > span > span > input[title="Adicionar ao carrinho"] → botão adicionar
 
 
 - **Explicação:**  
@@ -72,3 +72,4 @@ div#search
 - Combinar estratégias aumenta robustez: ex.: XPath dentro de um contêiner específico ou CSS de classes estáveis.  
 - Evitar usar índices fixos para produtos se a lista puder mudar.  
 - Verificar sempre se o elemento está **visível e clicável**, especialmente botões.  
+
