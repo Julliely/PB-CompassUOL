@@ -1,0 +1,24 @@
+{
+    "create": {
+        "user": {
+            "name": "Steve Jobs",
+            "email": "jobs@apple.com",
+            "password": "steve123"
+        },
+        "task": {
+            "name": "Criar uma nova versão do Ipod",
+            "tags": ["Ios", "music", "ipod"]
+        }
+    },
+        "duplicate": {
+        "user": {
+            "name": "Maria",
+            "email": "maria@gmail.com",
+            "password": "maria123"
+        },
+        "task": {
+            "name": "Recrutar",
+            "tags": []
+        }
+    }
+}

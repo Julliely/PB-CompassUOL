@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 7.3.2 (Python 3.12.10 on win32)" generated="2025-09-19T13:30:51.361468" rpa="false" schemaversion="5">
+<suite id="s1" name="Create" source="C:\QAx\projects\mark85-robot-express\tests\tasks\create.robot">
+<test id="s1-t1" name="Não deve cadastrar tarefa com nome duplicado" line="26">
+<kw name="Start Session" owner="base" type="SETUP">
+<kw name="New Browser" owner="Browser">
+<msg time="2025-09-19T13:30:52.067496" level="INFO">{"browser": "chromium", "headless": false, "chromiumSandbox": false, "devtools": false, "handleSIGHUP": true, "handleSIGINT": true, "handleSIGTERM": true, "slowMo": 0.0, "timeout": 30000.0, "tracesDir": "C:\\QAx\\projects\\mark85-robot-express\\logs\\browser\\traces\\temp\\12193b78-719a-4f4c-b151-5cb0564c4723"}</msg>
+<msg time="2025-09-19T13:30:52.115038" level="INFO">Starting Browser process C:\Users\Julliely\AppData\Local\Programs\Python\Python312\Lib\site-packages\Browser\wrapper\index.js using at 127.0.0.1:52601</msg>
+<msg time="2025-09-19T13:30:52.940097" level="INFO">Successfully created browser with options: {"browser":"chromium","headless":false,"chromiumSandbox":false,"devtools":false,"handleSIGHUP":true,"handleSIGINT":true,"handleSIGTERM":true,"slowMo":0,"timeout":30000,"tracesDir":"C:\\QAx\\projects\\mark85-robot-express\\logs\\browser\\traces\\temp\\12193b78-719a-4f4c-b151-5cb0564c4723"}</msg>
+<arg>browser=chromium</arg>
+<arg>headless=False</arg>
+<tag>BrowserControl</tag>
+<tag>Setter</tag>
+<doc>Create a new playwright Browser with specified options.</doc>
+<status status="PASS" start="2025-09-19T13:30:52.067496" elapsed="0.872601"/>
+</kw>
+<kw name="New Page" owner="Browser">
+<msg time="2025-09-19T13:30:53.765262" level="INFO">Successfully initialized new page object and opened url: http://localhost:3000</msg>
+<msg time="2025-09-19T13:30:53.765262" level="INFO">No context was open. New context was automatically opened when this page is created.</msg>
+<arg>${BASE_URL}</arg>
+<tag>BrowserControl</tag>
+<tag>Setter</tag>
+<doc>Open a new Page.</doc>
+<status status="PASS" start="2025-09-19T13:30:52.941096" elapsed="0.824166"/>
+</kw>
+<status status="PASS" start="2025-09-19T13:30:52.066496" elapsed="1.698766"/>
+</kw>
+<kw name="Get fixture" owner="base">
+<kw name="Load Json From File" owner="JSONLibrary">
+<msg time="2025-09-19T13:30:53.766270" level="INFO">${data} = {'create': {'user': {'name': 'Steve Jobs', 'email': 'jobs@apple.com', 'password': 'steve123'}, 'task': {'name': 'Criar uma nova versão do Ipod', 'tags': ['Ios', 'music', 'ipod']}}, 'duplicate': {'user...</msg>
+<var>${data}</var>
+<arg>${EXECDIR}/resources/fixtures/${file_name}.json</arg>
+<arg>encoding=utf-8</arg>
+<doc>Load JSON from file.</doc>
+<status status="PASS" start="2025-09-19T13:30:53.766270" elapsed="0.000000"/>
+</kw>
+<return>
+<value>${data}[${scenario}]</value>
+<status status="PASS" start="2025-09-19T13:30:53.766270" elapsed="0.000000"/>
+</return>
+<msg time="2025-09-19T13:30:53.766270" level="INFO">${data} = {'user': {'name': 'Maria', 'email': 'maria@gmail.com', 'password': 'maria123'}, 'task': {'name': 'Recrutar', 'tags': []}}</msg>
+<var>${data}</var>
+<arg>tasks</arg>
+<arg>duplicate</arg>
+<status status="PASS" start="2025-09-19T13:30:53.765262" elapsed="0.001008"/>
+</kw>
+<kw name="Clean user from database" owner="database">
+<arg>${data}[user][email]</arg>
+<status status="PASS" start="2025-09-19T13:30:53.767270" elapsed="0.184144"/>
+</kw>
+<kw name="Insert user from database" owner="database">
+<msg time="2025-09-19T13:30:53.992391" level="INFO">{'name': 'Maria', 'email': 'maria@gmail.com', 'password': 'maria123'}</msg>
+<arg>${data}[user]</arg>
+<status status="PASS" start="2025-09-19T13:30:53.952530" elapsed="0.039861"/>
+</kw>
+<kw name="POST On Session" owner="RequestsLibrary">
+<msg time="2025-09-19T13:30:53.993001" level="WARN">You might have an = symbol in url. You better place 'url=' before, example: 'url=/your-url/foo?param=a' or use '/your-url/foo  params=param=a' or escape it</msg>
+<msg time="2025-09-19T13:30:53.994026" level="FAIL">TypeError: RequestsOnSessionKeywords.post_on_session() missing 1 required positional argument: 'url'</msg>
+<arg>${data}[user]</arg>
+<doc>Sends a POST request on a previously created HTTP Session.</doc>
+<status status="FAIL" start="2025-09-19T13:30:53.993001" elapsed="0.001025">TypeError: RequestsOnSessionKeywords.post_on_session() missing 1 required positional argument: 'url'</status>
+</kw>
+<kw name="POST a new tasks" owner="service">
+<arg>${data}[task]</arg>
+<status status="NOT RUN" start="2025-09-19T13:30:53.995074" elapsed="0.000000"/>
+</kw>
+<kw name="Take Screenshot" owner="Browser" type="TEARDOWN">
+<msg time="2025-09-19T13:30:54.145508" level="INFO" html="true">&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td colspan="3"&gt;&lt;a href="browser/screenshot/robotframework-browser-screenshot-1.png" target="_blank"&gt;&lt;img src="browser/screenshot/robotframework-browser-screenshot-1.png" width="800px"/&gt;&lt;/a&gt;</msg>
+<tag>PageContent</tag>
+<doc>Takes a screenshot of the current window or element and saves it to disk.</doc>
+<status status="PASS" start="2025-09-19T13:30:53.996064" elapsed="0.149444"/>
+</kw>
+<msg time="2025-09-19T13:30:54.158507" level="INFO">Switching context to context=7cea3d31-1c4d-4f41-b259-c714eb6d40aa in CURRENT</msg>
+<msg time="2025-09-19T13:30:54.165508" level="INFO">Successfully changed active context: context=7cea3d31-1c4d-4f41-b259-c714eb6d40aa</msg>
+<msg time="2025-09-19T13:30:54.199508" level="INFO">Successfully closed Context</msg>
+<tag>dup</tag>
+<status status="FAIL" start="2025-09-19T13:30:52.065502" elapsed="2.080006">TypeError: RequestsOnSessionKeywords.post_on_session() missing 1 required positional argument: 'url'</status>
+</test>
+<doc>Cenários de cadastro de tarefas</doc>
+<status status="FAIL" start="2025-09-19T13:30:51.362468" elapsed="2.838040"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1" skip="0">All Tests</stat>
+</total>
+<tag>
+<stat pass="0" fail="1" skip="0">dup</stat>
+</tag>
+<suite>
+<stat name="Create" id="s1" pass="0" fail="1" skip="0">Create</stat>
+</suite>
+</statistics>
+<errors>
+<msg time="2025-09-19T13:30:51.437469" level="WARN">Error in file 'C:\QAx\projects\mark85-robot-express\resources\base.resource' on line 49: The '[Return]' setting is deprecated. Use the 'RETURN' statement instead.</msg>
+<msg time="2025-09-19T13:30:53.993001" level="WARN">You might have an = symbol in url. You better place 'url=' before, example: 'url=/your-url/foo?param=a' or use '/your-url/foo  params=param=a' or escape it</msg>
+</errors>
+</robot>
